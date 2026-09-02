@@ -3,6 +3,8 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
+export const runtime = "nodejs";
+
 export default async function AdminDashboard() {
   const session = await auth();
 

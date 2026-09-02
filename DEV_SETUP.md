@@ -8,6 +8,8 @@ This guide covers local development setup for Artup v1.0.
 - Docker and Docker Compose (for PostgreSQL)
 - npm (comes with Node.js)
 
+**Note**: This project uses Prisma 7 (ORM v7), which requires database adapters. Configuration is in `prisma7.config.ts`.
+
 ## Quick Start (Local Development)
 
 ### 1. Install Dependencies
@@ -103,6 +105,7 @@ docker compose -f docker-compose.dev.yml down -v
 artup/
 ├── prisma/
 │   └── schema.prisma          # Database schema (users, posts, auth tables)
+├── prisma7.config.ts          # Prisma 7 configuration (datasource URL)
 ├── src/
 │   ├── app/                   # Next.js App Router pages
 │   │   ├── page.tsx           # Public homepage (post list)
@@ -114,7 +117,7 @@ artup/
 │   ├── components/
 │   │   └── editor.tsx         # Tiptap rich-text editor (NO AI features)
 │   ├── lib/
-│   │   ├── prisma.ts          # Prisma client singleton
+│   │   ├── prisma.ts          # Prisma 7 client with PostgreSQL adapter
 │   │   └── utils.ts           # Helper functions (cn, etc.)
 │   └── auth.ts                # Auth.js configuration
 ├── docker-compose.dev.yml     # Local development database
@@ -128,7 +131,7 @@ artup/
 ## Tech Stack Details
 
 - **Next.js 15** - App Router, TypeScript, Server Components
-- **Prisma** - Type-safe ORM with PostgreSQL
+- **Prisma 7** - Type-safe ORM with PostgreSQL (using @prisma/adapter-pg)
 - **Auth.js v5** - Email magic links (no OAuth in v1.0)
 - **Tiptap** - Modern rich-text editor (replaces outdated Novel)
 - **Tailwind CSS** + **shadcn/ui** - Styling and components

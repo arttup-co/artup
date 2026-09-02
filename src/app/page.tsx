@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 
+export const runtime = "nodejs";
+
 export default async function Home() {
   const posts = await prisma.post.findMany({
     where: { published: true },
@@ -25,7 +27,7 @@ export default async function Home() {
           </div>
         ) : (
           <div className="space-y-8">
-            {posts.map((post) => (
+            {posts.map((post: any) => (
               <article key={post.id} className="border-b border-border pb-8">
                 {post.coverImageUrl && (
                   <Link href={`/${post.slug}`}>

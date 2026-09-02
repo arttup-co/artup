@@ -1,0 +1,9 @@
+{$DOMAIN} {
+    reverse_proxy app:3000
+
+    encode gzip
+
+    log {
+        output file /data/access.log
+    }
+}

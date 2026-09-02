@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
@@ -17,6 +18,16 @@ export default async function AdminDashboard() {
     orderBy: { updatedAt: "desc" },
   });
 
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: {
+      name: true,
+      email: true,
+      title: true,
+      avatarUrl: true,
+    },
+  });
+
   const publishedCount = posts.filter((p) => p.published).length;
   const draftCount = posts.filter((p) => !p.published).length;
 
@@ -24,18 +35,40 @@ export default async function AdminDashboard() {
     <div className="min-h-screen bg-background">
       <header className="border-b border-border">
         <div className="max-w-6xl mx-auto px-4 py-6 flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-            <p className="text-muted-foreground">
-              Welcome, {session.user.name || session.user.email}
-            </p>
+          <div className="flex items-center gap-4">
+            {user?.avatarUrl && (
+              <Image
+                src={user.avatarUrl}
+                alt={user.name || "User"}
+                width={48}
+                height={48}
+                className="rounded-full object-cover border-2 border-border"
+              />
+            )}
+            <div>
+              <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+              <p className="text-muted-foreground">
+                Welcome, {user?.name || user?.email}
+                {user?.title && (
+                  <span className="text-sm ml-2">• {user.title}</span>
+                )}
+              </p>
+            </div>
           </div>
-          <Link
-            href="/"
-            className="text-sm text-muted-foreground hover:text-primary transition-colors"
-          >
-            View site →
-          </Link>
+          <div className="flex gap-4 items-center">
+            <Link
+              href="/admin/settings"
+              className="text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              Settings
+            </Link>
+            <Link
+              href="/"
+              className="text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              View site →
+            </Link>
+          </div>
         </div>
       </header>
 

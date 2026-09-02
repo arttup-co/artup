@@ -21,6 +21,7 @@
     "@tiptap/extension-link": "^3.31.0",
     "@tiptap/extension-placeholder": "^3.31.0",
     "@tiptap/extension-typography": "^3.31.0",
+    "@tiptap/html": "^3.31.0",
     "@tiptap/react": "^3.31.0",
     "@tiptap/starter-kit": "^3.31.0",
     "class-variance-authority": "^0.7.1",

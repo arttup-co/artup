@@ -1,6 +1,8 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { tiptapJsonToHtml } from "@/lib/tiptap";
 
 export const runtime = "nodejs";
 
@@ -19,6 +21,9 @@ export default async function PostPage({
   if (!post) {
     notFound();
   }
+
+  // Convert Tiptap JSON to HTML
+  const htmlContent = tiptapJsonToHtml(post.content);
 
   return (
     <div className="min-h-screen bg-background">
@@ -41,15 +46,33 @@ export default async function PostPage({
 
         <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
 
-        <div className="flex items-center gap-4 text-muted-foreground mb-8 pb-8 border-b border-border">
+        <div className="flex items-center gap-4 mb-8 pb-8 border-b border-border">
           <Link
             href={`/author/${post.authorId}`}
-            className="hover:text-primary transition-colors"
+            className="flex items-center gap-3 hover:opacity-80 transition-opacity"
           >
-            {post.author.name || post.author.email}
+            {post.author.avatarUrl && (
+              <Image
+                src={post.author.avatarUrl}
+                alt={post.author.name || "Author"}
+                width={40}
+                height={40}
+                className="rounded-full object-cover border-2 border-border"
+              />
+            )}
+            <div>
+              <p className="font-medium text-foreground">
+                {post.author.name || post.author.email}
+              </p>
+              {post.author.title && (
+                <p className="text-sm text-muted-foreground">
+                  {post.author.title}
+                </p>
+              )}
+            </div>
           </Link>
-          <span>•</span>
-          <time dateTime={post.publishedAt?.toISOString()}>
+          <span className="text-muted-foreground">•</span>
+          <time dateTime={post.publishedAt?.toISOString()} className="text-muted-foreground">
             {post.publishedAt?.toLocaleDateString("en-US", {
               year: "numeric",
               month: "long",
@@ -59,8 +82,8 @@ export default async function PostPage({
         </div>
 
         <div
-          className="prose prose-lg max-w-none"
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          className="prose prose-lg max-w-none dark:prose-invert"
+          dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
       </article>
     </div>

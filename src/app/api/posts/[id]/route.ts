@@ -53,6 +53,7 @@ export async function PUT(
     coverImageUrl,
     metaDescription,
     published,
+    publishedAt,
   } = body;
 
   if (!title || !slug) {
@@ -81,8 +82,9 @@ export async function PUT(
         coverImageUrl,
         metaDescription,
         published,
-        publishedAt:
-          published && !existingPost.published ? new Date() : existingPost.publishedAt,
+        publishedAt: published
+          ? (publishedAt ? new Date(publishedAt) : (existingPost.publishedAt || new Date()))
+          : null,
       },
     });
 

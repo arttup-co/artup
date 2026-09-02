@@ -51,6 +51,7 @@ model User {
   name      String?
   email     String    @unique
   emailVerified DateTime?
+  title     String?   // Professional title/role (e.g., "Founder & CEO")
   bio       String?
   avatarUrl String?
   image     String?   // Auth.js expects this field

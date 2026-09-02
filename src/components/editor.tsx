@@ -7,8 +7,11 @@ import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import Typography from "@tiptap/extension-typography";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
-import { lowlight } from "lowlight";
+import { common, createLowlight } from "lowlight";
 import { useEffect } from "react";
+
+// Create and configure lowlight instance with common languages
+const lowlight = createLowlight(common);
 
 interface EditorProps {
   content: string;
@@ -46,7 +49,8 @@ export function Editor({ content, onChange, editable = true, placeholder = "Star
     content,
     editable,
     onUpdate: ({ editor }) => {
-      onChange(editor.getJSON() as unknown as string);
+      // Convert JSON to string for storage
+      onChange(JSON.stringify(editor.getJSON()));
     },
     editorProps: {
       attributes: {
@@ -56,8 +60,15 @@ export function Editor({ content, onChange, editable = true, placeholder = "Star
   });
 
   useEffect(() => {
-    if (editor && content !== editor.getJSON()) {
-      editor.commands.setContent(content);
+    if (editor && content) {
+      try {
+        // Parse the JSON string content and set it in the editor
+        const parsedContent = typeof content === 'string' ? JSON.parse(content) : content;
+        editor.commands.setContent(parsedContent);
+      } catch (error) {
+        // If parsing fails, treat it as plain text
+        editor.commands.setContent(content);
+      }
     }
   }, [content, editor]);
 

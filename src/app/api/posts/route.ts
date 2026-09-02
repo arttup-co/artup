@@ -20,6 +20,7 @@ export async function POST(request: Request) {
     coverImageUrl,
     metaDescription,
     published,
+    publishedAt,
   } = body;
 
   if (!title || !slug) {
@@ -39,7 +40,7 @@ export async function POST(request: Request) {
         coverImageUrl,
         metaDescription,
         published,
-        publishedAt: published ? new Date() : null,
+        publishedAt: published ? (publishedAt ? new Date(publishedAt) : new Date()) : null,
         authorId: session.user.id,
       },
     });

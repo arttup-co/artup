@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 
@@ -38,17 +39,22 @@ export default async function AuthorPage({
       <main className="max-w-4xl mx-auto px-4 py-12">
         <div className="mb-12">
           {author.avatarUrl && (
-            <img
+            <Image
               src={author.avatarUrl}
               alt={author.name || "Author"}
-              className="w-24 h-24 rounded-full mb-4"
+              width={96}
+              height={96}
+              className="rounded-full object-cover border-2 border-border mb-4"
             />
           )}
           <h1 className="text-4xl font-bold mb-2">
             {author.name || author.email}
           </h1>
+          {author.title && (
+            <p className="text-lg text-muted-foreground mb-2">{author.title}</p>
+          )}
           {author.bio && (
-            <p className="text-lg text-muted-foreground">{author.bio}</p>
+            <p className="text-base text-muted-foreground">{author.bio}</p>
           )}
         </div>
 

@@ -18,6 +18,7 @@ export default function EditPostPage({
   const [metaDescription, setMetaDescription] = useState("");
   const [content, setContent] = useState("");
   const [published, setPublished] = useState(false);
+  const [publishedAt, setPublishedAt] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -40,6 +41,11 @@ export default function EditPostPage({
         setMetaDescription(post.metaDescription || "");
         setContent(post.content);
         setPublished(post.published);
+        // Format date for datetime-local input
+        if (post.publishedAt) {
+          const date = new Date(post.publishedAt);
+          setPublishedAt(date.toISOString().slice(0, 16));
+        }
       } else {
         alert("Failed to load post");
         router.push("/admin");
@@ -67,6 +73,7 @@ export default function EditPostPage({
           coverImageUrl,
           metaDescription,
           published: shouldPublish,
+          publishedAt: shouldPublish && publishedAt ? new Date(publishedAt).toISOString() : null,
         }),
       });
 
@@ -208,6 +215,21 @@ export default function EditPostPage({
               rows={2}
               placeholder="Description for search engines"
             />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              Publish Date
+            </label>
+            <input
+              type="datetime-local"
+              value={publishedAt}
+              onChange={(e) => setPublishedAt(e.target.value)}
+              className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+            <p className="text-sm text-muted-foreground mt-1">
+              Leave empty to use current date/time when publishing
+            </p>
           </div>
 
           <div>

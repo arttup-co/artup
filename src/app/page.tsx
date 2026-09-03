@@ -92,66 +92,62 @@ export default async function Home() {
         </div>
       </section>
 
-      <main className="max-w-4xl mx-auto px-4 py-12">
+      <main className="max-w-[960px] mx-auto px-6 py-12 lg:py-16 lg:px-0">
+        <h2 className="text-2xl lg:text-5xl font-medium lg:font-semibold mb-8 lg:mb-12">
+          Blog
+        </h2>
+
         {posts.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-muted-foreground text-lg">
-              No posts published yet.
-            </p>
+            <p className="text-gray-600 text-lg">No posts published yet.</p>
           </div>
         ) : (
-          <div className="space-y-8">
+          <div className="space-y-6 lg:space-y-8">
             {posts.map((post: any) => (
-              <article key={post.id} className="border-b border-border pb-8">
-                {post.coverImageUrl && (
-                  <Link href={`/${post.slug}`}>
-                    <img
-                      src={post.coverImageUrl}
-                      alt={post.title}
-                      className="w-full h-64 object-cover rounded-lg mb-4"
-                    />
+              <article
+                key={post.id}
+                className="bg-[#F5F5F5] rounded-2xl p-6 lg:p-10"
+              >
+                <div className="flex flex-row justify-between items-center space-x-8 gap-2 lg:gap-4 mb-4 lg:mb-6">
+                  <Link href={`/${post.slug}`} className="flex-1">
+                    <h3 className="text-lg lg:text-2xl font-normal text-black hover:opacity-80 transition-opacity">
+                      {post.title}
+                    </h3>
                   </Link>
-                )}
-                <Link href={`/${post.slug}`}>
-                  <h2 className="text-2xl font-bold hover:text-primary transition-colors mb-2">
-                    {post.title}
-                  </h2>
-                </Link>
-                {post.excerpt && (
-                  <p className="text-muted-foreground mb-4">{post.excerpt}</p>
-                )}
-                <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                  <Link
-                    href={`/author/${post.authorId}`}
-                    className="flex items-center gap-2 hover:text-primary transition-colors"
+                  <time
+                    dateTime={post.publishedAt?.toISOString()}
+                    className="text-[13px] lg:text-[15px] text-[#666666] flex-shrink-0 text-left lg:whitespace-nowrap"
                   >
-                    {post.author.avatarUrl && (
-                      <Image
-                        src={post.author.avatarUrl}
-                        alt={post.author.name || "Author"}
-                        width={20}
-                        height={20}
-                        className="rounded-full object-cover border border-border"
-                      />
-                    )}
-                    <span>
-                      {post.author.name || post.author.email}
-                      {post.author.title && (
-                        <span className="text-xs text-muted-foreground ml-1">
-                          • {post.author.title}
-                        </span>
-                      )}
+                    <span className="lg:hidden">
+                      {post.publishedAt?.toLocaleDateString("en-US", {
+                        month: "long",
+                      })}
+                      <br />
+                      {post.publishedAt?.getDate()}, {post.publishedAt?.getFullYear()}
                     </span>
-                  </Link>
-                  <span>•</span>
-                  <time dateTime={post.publishedAt?.toISOString()}>
-                    {post.publishedAt?.toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
+                    <span className="hidden lg:inline">
+                      {post.publishedAt?.toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </span>
                   </time>
                 </div>
+
+                {post.excerpt && (
+                  <p className="text-[14px] lg:text-[15.5px] text-black lg:leading-[1.7] mb-6 [display:-webkit-box] [-webkit-line-clamp:10] [-webkit-box-orient:vertical] [overflow:hidden] lg:[-webkit-line-clamp:4]">
+                    {post.excerpt}
+                  </p>
+                )}
+
+                <Link
+                  href={`/${post.slug}`}
+                  className="inline-flex items-center gap-2 text-base text-[#555555] hover:text-black transition-colors underline"
+                >
+                  Read more
+                  <span aria-hidden="true">→</span>
+                </Link>
               </article>
             ))}
           </div>

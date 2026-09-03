@@ -26,66 +26,55 @@ export default async function PostPage({
   const htmlContent = tiptapJsonToHtml(post.content);
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b border-border">
-        <div className="max-w-4xl mx-auto px-4 py-6">
-          <Link href="/" className="text-lg font-semibold hover:text-primary transition-colors">
-            ← Back to posts
-          </Link>
-        </div>
-      </header>
+    <div className="min-h-screen bg-white">
+      <div className="max-w-[960px] mx-auto px-6 py-12 lg:py-16 lg:px-0">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-base text-[#555555] hover:text-black transition-colors mb-8"
+        >
+          ← Back to posts
+        </Link>
 
-      <article className="max-w-4xl mx-auto px-4 py-12">
         {post.coverImageUrl && (
           <img
             src={post.coverImageUrl}
             alt={post.title}
-            className="w-full h-96 object-cover rounded-lg mb-8"
+            className="w-full max-h-[500px] object-cover rounded-2xl mb-8"
           />
         )}
 
-        <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
+        <article className="rounded-2xl p-6 lg:p-10">
+          <div className="flex flex-row justify-between items-center gap-2 lg:gap-4 mb-6 lg:mb-8">
+            <h1 className="text-2xl lg:text-3xl font-medium text-black flex-1">
+              {post.title}
+            </h1>
+            <time
+              dateTime={post.publishedAt?.toISOString()}
+              className="text-[13px] lg:text-[15px] text-[#666666] flex-shrink-0 text-left lg:whitespace-nowrap"
+            >
+              <span className="lg:hidden">
+                {post.publishedAt?.toLocaleDateString("en-US", {
+                  month: "long",
+                })}
+                <br />
+                {post.publishedAt?.getDate()}, {post.publishedAt?.getFullYear()}
+              </span>
+              <span className="hidden lg:inline">
+                {post.publishedAt?.toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </span>
+            </time>
+          </div>
 
-        <div className="flex items-center gap-4 mb-8 pb-8 border-b border-border">
-          <Link
-            href={`/author/${post.authorId}`}
-            className="flex items-center gap-3 hover:opacity-80 transition-opacity"
-          >
-            {post.author.avatarUrl && (
-              <Image
-                src={post.author.avatarUrl}
-                alt={post.author.name || "Author"}
-                width={40}
-                height={40}
-                className="rounded-full object-cover border-2 border-border"
-              />
-            )}
-            <div>
-              <p className="font-medium text-foreground">
-                {post.author.name || post.author.email}
-              </p>
-              {post.author.title && (
-                <p className="text-sm text-muted-foreground">
-                  {post.author.title}
-                </p>
-              )}
-            </div>
-          </Link>
-          <span className="text-muted-foreground">•</span>
-          <time dateTime={post.publishedAt?.toISOString()} className="text-muted-foreground">
-            {post.publishedAt?.toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </time>
-        </div>
-
-        <div
-          className="prose prose-lg max-w-none dark:prose-invert"
-          dangerouslySetInnerHTML={{ __html: htmlContent }}
-        />
-      </article>
+          <div
+            className="article-content text-[14px] lg:text-[15.5px] text-[#333333] leading-[1.7]"
+            dangerouslySetInnerHTML={{ __html: htmlContent }}
+          />
+        </article>
+      </div>
     </div>
   );
 }

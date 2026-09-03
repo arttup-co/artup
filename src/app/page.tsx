@@ -11,50 +11,86 @@ export default async function Home() {
     include: { author: true },
   });
 
-  // Fetch the site owner (first user) for the header
+  // Fetch the site owner (first user) for the hero section
   const siteOwner = await prisma.user.findFirst({
     select: {
       id: true,
       name: true,
+      email: true,
       title: true,
+      bio: true,
       avatarUrl: true,
     },
   });
 
+  const defaultBio =
+    "Welcome to my blog where I share insights and experiences from my journey.";
+
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b border-border">
-        <div className="max-w-4xl mx-auto px-4 py-6">
-          {siteOwner && (siteOwner.name || siteOwner.avatarUrl) ? (
-            <Link
-              href={`/author/${siteOwner.id}`}
-              className="flex items-center gap-3 hover:opacity-80 transition-opacity w-fit"
-            >
-              {siteOwner.avatarUrl && (
+    <div className="min-h-screen bg-white">
+      {/* Hero Section */}
+      <section className="bg-white">
+        <div className="max-w-[960px] mx-auto px-6 py-12 lg:py-24 lg:px-0">
+          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-8 lg:gap-0">
+            {/* Image - top on mobile, right on desktop */}
+            {siteOwner?.avatarUrl && (
+              <div className="lg:hidden w-full">
                 <Image
                   src={siteOwner.avatarUrl}
                   alt={siteOwner.name || "Author"}
-                  width={48}
-                  height={48}
-                  className="rounded-full object-cover border-2 border-border"
+                  width={300}
+                  height={387}
+                  className="object-cover rounded-[20px]"
+                  priority
                 />
-              )}
-              <div>
-                <h1 className="text-2xl font-bold">
-                  {siteOwner.name || "Artup"}
+              </div>
+            )}
+
+            {/* Content */}
+            <div className="space-y-6 lg:space-y-6">
+              <div className="lg:space-y-3 space-y-4">
+                <h1 className="font-normal lg:font-medium text-3xl lg:text-4xl leading-[1.1] tracking-[-0.02em] text-black">
+                  {siteOwner?.name || "Artup"}
                 </h1>
-                {siteOwner.title && (
-                  <p className="text-sm text-muted-foreground">
+                {siteOwner?.title && (
+                  <p className="text-[13.5px] lg:text-[14px] leading-[1.5] text-[#666666]">
                     {siteOwner.title}
                   </p>
                 )}
               </div>
-            </Link>
-          ) : (
-            <h1 className="text-3xl font-bold">Artup</h1>
-          )}
+
+              <p className="text-[15.5px] lg:text-[18px] lg-leading-[1.7] text-[#555555] max-w-[520px]">
+                {siteOwner?.bio || defaultBio}
+              </p>
+
+              {siteOwner?.email && (
+                <div className="lg:pt-2">
+                  <a
+                    href={`mailto:${siteOwner.email}`}
+                    className="inline-flex items-center justify-center px-6 lg:px-8 py-2 lg:py-3 border border-[#E0E0E0] rounded-full text-[14px] lg:text-[15px] font-normal text-[#555555] hover:bg-[#F9F9F9] hover:border-[#D0D0D0] transition-all duration-200"
+                  >
+                    Contacts
+                  </a>
+                </div>
+              )}
+            </div>
+
+            {/* Desktop: Image on right */}
+            {siteOwner?.avatarUrl && (
+              <div className="hidden lg:block">
+                <Image
+                  src={siteOwner.avatarUrl}
+                  alt={siteOwner.name || "Author"}
+                  width={384}
+                  height={476}
+                  className="max-w-[384px] max-h-[476px] object-cover rounded-[20px]"
+                  priority
+                />
+              </div>
+            )}
+          </div>
         </div>
-      </header>
+      </section>
 
       <main className="max-w-4xl mx-auto px-4 py-12">
         {posts.length === 0 ? (

@@ -65,15 +65,25 @@ The [install.sh](install.sh) script handles everything automatically. For manual
 ### Local Development
 
 ```bash
-# Install dependencies
+# 1. Install dependencies
 npm install
 
-# Set up database
+# 2. Set up environment
 cp .env.example .env
+# Edit .env and uncomment the dev defaults (lines 26-28):
+#   ADMIN_EMAIL=admin@artup.local
+#   ADMIN_PASSWORD=admin
+#   NEXTAUTH_URL=http://localhost:3000
+# Also generate NEXTAUTH_SECRET: openssl rand -base64 32
+
+# 3. Set up database
 npx prisma generate
 npx prisma migrate dev
 
-# Start dev server
+# 4. Create admin user (reads from .env)
+npm run db:seed
+
+# 5. Start dev server
 npm run dev
 ```
 

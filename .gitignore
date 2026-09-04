@@ -143,3 +143,11 @@ vite.config.ts.timestamp-*
 .vite/
 
 /src/generated/prisma
+
+# SQLite database files (local development)
+*.db
+*.db-shm
+*.db-wal
+prisma/*.db
+prisma/*.db-shm
+prisma/*.db-wal

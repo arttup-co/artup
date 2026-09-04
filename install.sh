@@ -46,12 +46,6 @@ while [ -z "$ADMIN_EMAIL" ]; do
     read -p "Admin email address: " ADMIN_EMAIL
 done
 
-read -p "PostgreSQL password (leave empty for auto-generated): " POSTGRES_PASSWORD
-if [ -z "$POSTGRES_PASSWORD" ]; then
-    POSTGRES_PASSWORD=$(openssl rand -base64 32)
-    echo -e "${GREEN}Generated PostgreSQL password: ${POSTGRES_PASSWORD}${NC}"
-fi
-
 read -p "NextAuth secret (leave empty for auto-generated): " NEXTAUTH_SECRET
 if [ -z "$NEXTAUTH_SECRET" ]; then
     NEXTAUTH_SECRET=$(openssl rand -base64 32)
@@ -76,11 +70,8 @@ echo ""
 echo -e "${GREEN}Creating .env file...${NC}"
 
 cat > .env <<EOF
-# Database
-POSTGRES_USER=artup
-POSTGRES_PASSWORD=$POSTGRES_PASSWORD
-POSTGRES_DB=artup
-DATABASE_URL=postgresql://artup:$POSTGRES_PASSWORD@postgres:5432/artup
+# Database (SQLite)
+DATABASE_URL=file:/data/artup.db
 
 # Domain
 DOMAIN=$DOMAIN

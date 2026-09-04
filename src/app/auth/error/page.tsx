@@ -1,10 +1,13 @@
 import Link from "next/link";
 
-export default function AuthError({
+export default async function AuthError({
   searchParams,
 }: {
   searchParams: Promise<{ error?: string }>;
 }) {
+  const params = await searchParams;
+  const errorMessage = params.error || "Unknown error occurred";
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="max-w-md w-full p-8 bg-card rounded-lg shadow-lg">
@@ -12,7 +15,7 @@ export default function AuthError({
           Authentication Error
         </h1>
         <p className="text-muted-foreground mb-6">
-          There was a problem signing you in. Please try again.
+          There was a problem signing you in: {errorMessage}. Please try again.
         </p>
         <Link
           href="/auth/signin"

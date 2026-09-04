@@ -1,17 +1,26 @@
 import { PrismaClient } from "@prisma/client";
-import { PrismaPg } from "@prisma/adapter-pg";
-import pg from "pg";
+import { PrismaLibSql } from "@prisma/adapter-libsql";
+import type { Config } from "@libsql/client";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
 function createPrismaClient() {
-  const pool = new pg.Pool({
-    connectionString: process.env.DATABASE_URL,
-  });
+  const databaseUrl = process.env.DATABASE_URL;
 
-  const adapter = new PrismaPg(pool);
+  if (!databaseUrl) {
+    throw new Error(
+      "DATABASE_URL environment variable is not set. " +
+      "Please create a .env file with DATABASE_URL=file:./prisma/dev.db"
+    );
+  }
+
+  const config: Config = {
+    url: databaseUrl,
+  };
+
+  const adapter = new PrismaLibSql(config);
 
   return new PrismaClient({
     adapter,

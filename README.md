@@ -98,6 +98,40 @@ Default dev credentials:
 - Email: `admin@artup.local`
 - Password: `admin`
 
+### Production Build (Local)
+
+For testing production mode locally:
+
+```bash
+# 1. Install dependencies
+npm install
+
+# 2. Set up environment for production
+cp .env.example .env
+
+# Generate a secure secret for production
+openssl rand -base64 32
+# Copy the output and add it to .env as NEXTAUTH_SECRET
+
+# Edit .env with production settings:
+#   NODE_ENV=production
+#   DATABASE_URL=file:./prisma/prod.db
+#   NEXTAUTH_URL=http://localhost:3000 (or your domain)
+#   NEXTAUTH_SECRET=<paste the generated secret here>
+#   ADMIN_EMAIL and ADMIN_PASSWORD for your admin account
+
+# 3. Set up database (production mode)
+npx prisma generate
+npm run db:migrate:deploy  # Non-interactive, production-safe migrations
+
+# 4. Create admin user
+npm run db:seed
+
+# 5. Build and start production server
+npm run build
+npm run start
+```
+
 ### Vercel Deployment
 
 Vercel deployment guide coming in v1.1 (requires database migration to hosted SQLite/PostgreSQL).

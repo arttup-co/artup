@@ -21,8 +21,8 @@ Vercel + Neon Postgres, documented later.
 
 ## Tech stack (decided)
 - Next.js 15, App Router, TypeScript
-- PostgreSQL via Drizzle ORM
-- Auth.js (NextAuth v5) — email magic link only for v1
+- SQLite via Prisma ORM with LibSQL adapter
+- Auth.js (NextAuth v5) — email/password authentication for v1
 - Editor: Novel (Tiptap-based) — AI autocomplete plugin OFF for v1
 - Styling: Tailwind + shadcn/ui
 - Reverse proxy / TLS: Caddy (auto Let's Encrypt from a domain env var)
@@ -34,7 +34,7 @@ The only bar: a stranger can deploy Artup and publish a real article within
 minutes. Nothing beyond this list belongs in v1.0.
 
 Included:
-- Auth: email magic link only (no OAuth)
+- Auth: email/password authentication (no OAuth, no email verification)
 - Create / edit / publish a post via Novel editor (AI plugin disabled)
 - Draft vs. published state
 - Public blog views: post list, single post page, author page
@@ -62,11 +62,12 @@ Only two tables: `users`, `posts`. No `analytics_events`, no `media`, no
 `ai_usage` — those are added in later versions, not now.
 
 ## Deployment packaging (target deliverables for v1.0)
-- `docker-compose.yml` — app + postgres + caddy services
+- `docker-compose.yml` — app + SQLite + caddy services
 - `Caddyfile` — minimal reverse proxy + auto-HTTPS config
 - `install.sh` — one-command installer: checks Docker, prompts for domain +
-  admin email, generates `.env`, runs `docker compose up -d`
+  admin email/password, generates `.env`, runs `docker compose up -d`, creates admin user
 - `.env.example` — documents every variable for manual setup too
+- `start.js` — Docker entry point that runs migrations then starts Next.js
 
 ## Repo / org
 - GitHub org: `arttup-co` (reused existing org)
@@ -78,14 +79,22 @@ Only two tables: `users`, `posts`. No `analytics_events`, no `media`, no
 `main` always deployable, feature branches merged via PR.
 
 ## Current phase
-Repo created and cloned locally. CLAUDE.md in place. Next: define the v1.0
-Drizzle schema (users, posts), then scaffold Next.js app, Docker/Caddy/
-install.sh, and auth wiring.
+V1.0 deployment infrastructure complete. Core features implemented:
+- Prisma schema with User and Post models
+- Email/password authentication via Auth.js
+- Docker deployment with SQLite database
+- One-command installer with admin account creation
+Next: complete remaining v1.0 features (post editor, public pages).
 
 ## Decisions log
 - Cut analytics and image upload from v1.0 to keep the first release truly
   minimal and shippable — both return in v1.1/v1.2.
 - Cover image is a plain URL field in v1.0, not an upload pipeline.
+- **Switched from PostgreSQL to SQLite** (2026-09-03): Simpler for single-tenant
+  deployments, no separate database container needed, single-file portability.
+- **Switched from magic link to email/password auth** (2026-09-04): Eliminates
+  SMTP dependency for single-tenant use case, matches WordPress-like setup UX,
+  simpler installation (no email service required), better for self-hosted model.
 
 ## Commit conventions
 Every commit authored with Claude's help must credit both authors. Use git's

@@ -12,30 +12,78 @@ Most blogging tools force a trade-off: easy-but-locked-in (Medium, Substack) or 
 
 ## Features
 
-- ✍️ **AI-assisted writing** — inline autocomplete, auto-generated titles/meta descriptions/tags, auto-summaries
-- 📊 **Built-in analytics** — cookieless, first-party, no third-party trackers
+### v1.0 (Current)
 - 🚀 **One-command deploy** — Docker Compose, works on any VPS/cloud provider
-- 🔓 **No lock-in** — your posts, your database, your domain
-- 🎨 **Themeable** — clean defaults, easy to restyle
-- 🔑 **Bring your own AI key** — OpenAI, Anthropic, Google, or local models via Ollama
+- ✍️ **Modern editor** — Novel/Tiptap-based rich text editor
+- 🔓 **No lock-in** — your posts, your SQLite database, your domain
+- 🔒 **Simple auth** — email/password, no external dependencies
+- 📦 **Zero config** — SQLite database, no separate DB container needed
+- 🔐 **Auto HTTPS** — Caddy handles SSL certificates automatically
+
+### Coming Soon
+- ✍️ **AI-assisted writing** (v1.4) — inline autocomplete, auto-generated SEO
+- 📊 **Built-in analytics** (v1.2) — cookieless, first-party tracking
+- 🎨 **Themes** (v1.3) — customizable design system
+- 📷 **Image uploads** (v1.1) — S3-compatible storage
 
 ## Quickstart
 
+### Prerequisites
+- A VPS with Docker and Docker Compose installed
+- A domain name pointing to your server's IP address
+
+### Installation
+
 ```bash
-curl -fsSL https://arttup.co/install.sh | bash
+git clone https://github.com/arttup-co/artup.git
+cd artup
+chmod +x install.sh
+./install.sh
 ```
 
-Answers a couple of prompts (domain, admin email) and you're live with HTTPS in a few minutes.
+The installer will prompt you for:
+- Your domain name (e.g., `blog.example.com`)
+- Admin email address
+- Admin password
+
+That's it! Your blog will be live with automatic HTTPS in a few minutes.
 
 ## Tech Stack
 
-Next.js (App Router) · TypeScript · PostgreSQL · Drizzle ORM · Auth.js · Tailwind · Vercel AI SDK · Docker
+Next.js 15 (App Router) · TypeScript · SQLite · Prisma ORM · Auth.js · Tailwind · shadcn/ui · Docker · Caddy
 
 ## Self-Hosting
 
-Full guide: [docs link — coming soon]
+### Docker Compose (Recommended)
 
-Also deployable on Vercel — see [deployment docs — coming soon].
+The [install.sh](install.sh) script handles everything automatically. For manual setup:
+
+1. Copy [.env.example](.env.example) to `.env` and configure
+2. Run `docker compose up -d --build`
+3. Your blog will be available at your domain with automatic HTTPS
+
+### Local Development
+
+```bash
+# Install dependencies
+npm install
+
+# Set up database
+cp .env.example .env
+npx prisma generate
+npx prisma migrate dev
+
+# Start dev server
+npm run dev
+```
+
+Default dev credentials:
+- Email: `admin@artup.local`
+- Password: `admin`
+
+### Vercel Deployment
+
+Vercel deployment guide coming in v1.1 (requires database migration to hosted SQLite/PostgreSQL).
 
 ## Contributing
 

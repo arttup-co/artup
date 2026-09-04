@@ -6,6 +6,13 @@ Setting up a blog shouldn't take a weekend. Artup gets you writing in minutes �
 
 [Features](#features) • [Quickstart](#quickstart) • [Tech Stack](#tech-stack) • [Self-Hosting](#self-hosting) • [Contributing](#contributing)
 
+---
+
+> **⚠️ Pre-v1.0 Status**
+> Artup is in active development. Local development and core features work now. Production deployment (Docker + one-command installer) is being finalized. Follow progress in [Issues](../../issues) or [Discussions](../../discussions).
+
+---
+
 ## Why Artup
 
 Most blogging tools force a trade-off: easy-but-locked-in (Medium, Substack) or powerful-but-painful-to-set-up (self-hosted WordPress, Ghost with manual server config). Artup is built to remove that trade-off — one command gets you a fully working, AI-native blog on infrastructure you own.

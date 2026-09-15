@@ -1,10 +1,55 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import Footer from "@/components/Footer";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const siteOwner = await prisma.user.findFirst({
+    select: {
+      name: true,
+      email: true,
+      title: true,
+      bio: true,
+      avatarUrl: true,
+    },
+  });
+
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const siteName = siteOwner?.name || "Artup";
+  const description = siteOwner?.title
+    ? `${siteOwner.title}${siteOwner.bio ? ` - ${siteOwner.bio}` : ""}`
+    : siteOwner?.bio || "AI-native blogging platform for freelancers and founders";
+  const imageUrl = siteOwner?.avatarUrl || `${siteUrl}/og-image.png`;
+
+  return {
+    title: siteName,
+    description,
+    openGraph: {
+      type: "website",
+      url: siteUrl,
+      title: siteName,
+      description,
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: siteName,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: siteName,
+      description,
+      images: [imageUrl],
+    },
+  };
+}
 
 export default async function Home() {
   const posts = await prisma.post.findMany({

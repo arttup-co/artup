@@ -70,11 +70,15 @@ export default async function AuthorPage({
                 <article key={post.id} className="border-b border-border pb-8">
                   {post.coverImageUrl && (
                     <Link href={`/${post.slug}`}>
-                      <img
-                        src={post.coverImageUrl}
-                        alt={post.title}
-                        className="w-full h-64 object-cover rounded-lg mb-4"
-                      />
+                      <div className="relative w-full h-64 mb-4 rounded-lg overflow-hidden">
+                        <Image
+                          src={post.coverImageUrl}
+                          alt={post.title}
+                          width={800}
+                          height={256}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
                     </Link>
                   )}
                   <Link href={`/${post.slug}`}>

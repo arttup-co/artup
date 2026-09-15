@@ -1,10 +1,62 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { tiptapJsonToHtml } from "@/lib/tiptap";
 
 export const runtime = "nodejs";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+
+  const post = await prisma.post.findUnique({
+    where: { slug, published: true },
+    include: { author: true },
+  });
+
+  if (!post) {
+    return {
+      title: "Post Not Found",
+    };
+  }
+
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const postUrl = `${siteUrl}/${post.slug}`;
+  const description = post.excerpt || post.metaDescription || post.title;
+  const imageUrl = post.coverImageUrl || post.author.avatarUrl || `${siteUrl}/og-image.png`;
+
+  return {
+    title: post.title,
+    description,
+    openGraph: {
+      type: "article",
+      url: postUrl,
+      title: post.title,
+      description,
+      publishedTime: post.publishedAt?.toISOString(),
+      authors: [post.author.name || post.author.email || ""],
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description,
+      images: [imageUrl],
+    },
+  };
+}
 
 export default async function PostPage({
   params,
@@ -36,11 +88,16 @@ export default async function PostPage({
         </Link>
 
         {post.coverImageUrl && (
-          <img
-            src={post.coverImageUrl}
-            alt={post.title}
-            className="w-full max-h-[500px] object-cover rounded-2xl mb-8"
-          />
+          <div className="relative w-full max-h-[500px] mb-8 rounded-2xl overflow-hidden">
+            <Image
+              src={post.coverImageUrl}
+              alt={post.title}
+              width={960}
+              height={500}
+              className="w-full object-cover"
+              priority
+            />
+          </div>
         )}
 
         <article className="rounded-2xl p-6 lg:p-10">

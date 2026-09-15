@@ -11,6 +11,13 @@ export default function SettingsPage() {
   const [bio, setBio] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
   const [username, setUsername] = useState("");
+  const [emailContact, setEmailContact] = useState("");
+  const [githubUrl, setGithubUrl] = useState("");
+  const [twitterUrl, setTwitterUrl] = useState("");
+  const [linkedinUrl, setLinkedinUrl] = useState("");
+  const [websiteUrl, setWebsiteUrl] = useState("");
+  const [location, setLocation] = useState("");
+  const [availability, setAvailability] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -26,6 +33,13 @@ export default function SettingsPage() {
           setBio(data.bio || "");
           setAvatarUrl(data.avatarUrl || "");
           setUsername(data.username || "");
+          setEmailContact(data.emailContact || "");
+          setGithubUrl(data.githubUrl || "");
+          setTwitterUrl(data.twitterUrl || "");
+          setLinkedinUrl(data.linkedinUrl || "");
+          setWebsiteUrl(data.websiteUrl || "");
+          setLocation(data.location || "");
+          setAvailability(data.availability || "");
         }
       } catch (error) {
         console.error("Failed to fetch profile:", error);
@@ -53,6 +67,13 @@ export default function SettingsPage() {
           title,
           bio,
           avatarUrl,
+          emailContact,
+          githubUrl,
+          twitterUrl,
+          linkedinUrl,
+          websiteUrl,
+          location,
+          availability,
         }),
       });
 
@@ -179,6 +200,119 @@ export default function SettingsPage() {
                 />
               </div>
             )}
+          </div>
+
+          <div className="border-t border-border pt-6">
+            <h2 className="text-xl font-semibold mb-4">Social Links</h2>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Contact Email
+                </label>
+                <input
+                  type="email"
+                  value={emailContact}
+                  onChange={(e) => setEmailContact(e.target.value)}
+                  className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="contact@example.com"
+                />
+                <p className="text-sm text-muted-foreground mt-1">
+                  Public email for readers to contact you
+                </p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  GitHub URL
+                </label>
+                <input
+                  type="url"
+                  value={githubUrl}
+                  onChange={(e) => setGithubUrl(e.target.value)}
+                  className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="https://github.com/yourusername"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  X (Twitter) URL
+                </label>
+                <input
+                  type="url"
+                  value={twitterUrl}
+                  onChange={(e) => setTwitterUrl(e.target.value)}
+                  className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="https://x.com/yourusername"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  LinkedIn URL
+                </label>
+                <input
+                  type="url"
+                  value={linkedinUrl}
+                  onChange={(e) => setLinkedinUrl(e.target.value)}
+                  className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="https://linkedin.com/in/yourusername"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t border-border pt-6">
+            <h2 className="text-xl font-semibold mb-4">Footer Contact</h2>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Website URL
+                </label>
+                <input
+                  type="url"
+                  value={websiteUrl}
+                  onChange={(e) => setWebsiteUrl(e.target.value)}
+                  className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="https://yourblog.com"
+                />
+                <p className="text-sm text-muted-foreground mt-1">
+                  Your personal or blog website
+                </p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Location
+                </label>
+                <input
+                  type="text"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="San Francisco, USA"
+                />
+                <p className="text-sm text-muted-foreground mt-1">
+                  Your location or timezone
+                </p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Availability
+                </label>
+                <input
+                  type="text"
+                  value={availability}
+                  onChange={(e) => setAvailability(e.target.value)}
+                  className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="Available for freelance work"
+                />
+                <p className="text-sm text-muted-foreground mt-1">
+                  Your current availability status
+                </p>
+              </div>
+            </div>
           </div>
 
           <div className="flex gap-3 pt-4">

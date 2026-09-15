@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
+import Footer from "@/components/Footer";
 
 export const runtime = "nodejs";
 
@@ -11,7 +12,7 @@ export default async function Home() {
     include: { author: true },
   });
 
-  // Fetch the site owner (first user) for the hero section
+  // Fetch the site owner (first user) for the hero section and footer
   const siteOwner = await prisma.user.findFirst({
     select: {
       id: true,
@@ -20,6 +21,13 @@ export default async function Home() {
       title: true,
       bio: true,
       avatarUrl: true,
+      emailContact: true,
+      websiteUrl: true,
+      location: true,
+      availability: true,
+      githubUrl: true,
+      twitterUrl: true,
+      linkedinUrl: true,
     },
   });
 
@@ -63,10 +71,10 @@ export default async function Home() {
                 {siteOwner?.bio || defaultBio}
               </p>
 
-              {siteOwner?.email && (
+              {siteOwner?.emailContact && (
                 <div className="lg:pt-2">
                   <a
-                    href={`mailto:${siteOwner.email}`}
+                    href={`mailto:${siteOwner.emailContact}`}
                     className="inline-flex items-center justify-center px-6 lg:px-8 py-2 lg:py-3 border border-[#E0E0E0] rounded-full text-[14px] lg:text-[15px] font-normal text-[#555555] hover:bg-[#F9F9F9] hover:border-[#D0D0D0] transition-all duration-200"
                   >
                     Contacts
@@ -153,6 +161,16 @@ export default async function Home() {
           </div>
         )}
       </main>
+
+      <Footer
+        emailContact={siteOwner?.emailContact}
+        websiteUrl={siteOwner?.websiteUrl}
+        location={siteOwner?.location}
+        availability={siteOwner?.availability}
+        githubUrl={siteOwner?.githubUrl}
+        twitterUrl={siteOwner?.twitterUrl}
+        linkedinUrl={siteOwner?.linkedinUrl}
+      />
     </div>
   );
 }

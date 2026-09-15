@@ -22,6 +22,13 @@ export async function GET() {
         bio: true,
         avatarUrl: true,
         image: true,
+        emailContact: true,
+        githubUrl: true,
+        twitterUrl: true,
+        linkedinUrl: true,
+        websiteUrl: true,
+        location: true,
+        availability: true,
       },
     });
 
@@ -46,7 +53,7 @@ export async function PUT(request: Request) {
   }
 
   const body = await request.json();
-  const { name, title, bio, avatarUrl } = body;
+  const { name, title, bio, avatarUrl, emailContact, githubUrl, twitterUrl, linkedinUrl, websiteUrl, location, availability } = body;
 
   // Validate required field
   if (!name || name.trim() === "") {
@@ -66,6 +73,15 @@ export async function PUT(request: Request) {
         avatarUrl: avatarUrl?.trim() || null,
         // Also update the image field for Auth.js compatibility
         image: avatarUrl?.trim() || null,
+        // Social links
+        emailContact: emailContact?.trim() || null,
+        githubUrl: githubUrl?.trim() || null,
+        twitterUrl: twitterUrl?.trim() || null,
+        linkedinUrl: linkedinUrl?.trim() || null,
+        // Footer contact
+        websiteUrl: websiteUrl?.trim() || null,
+        location: location?.trim() || null,
+        availability: availability?.trim() || null,
       },
       select: {
         id: true,
@@ -76,6 +92,13 @@ export async function PUT(request: Request) {
         bio: true,
         avatarUrl: true,
         image: true,
+        emailContact: true,
+        githubUrl: true,
+        twitterUrl: true,
+        linkedinUrl: true,
+        websiteUrl: true,
+        location: true,
+        availability: true,
       },
     });
 

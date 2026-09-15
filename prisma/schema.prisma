@@ -57,6 +57,18 @@ model User {
   bio       String?
   avatarUrl String?
   image     String?   // Auth.js expects this field
+
+  // Social links
+  emailContact String?   // Public contact email for display
+  githubUrl    String?   // GitHub profile URL
+  twitterUrl   String?   // X/Twitter profile URL
+  linkedinUrl  String?   // LinkedIn profile URL
+
+  // Footer contact information
+  websiteUrl   String?   // Personal/blog website URL
+  location     String?   // Location/timezone (e.g., "San Francisco, USA")
+  availability String?   // Availability status (e.g., "Available for freelance work")
+
   createdAt DateTime  @default(now())
 
   accounts  Account[]

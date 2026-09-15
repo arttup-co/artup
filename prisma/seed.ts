@@ -1,7 +1,7 @@
 /**
  * Artup Database Seed Script
  *
- * Creates the initial admin user from ADMIN_EMAIL and ADMIN_PASSWORD environment variables.
+ * Creates the initial admin user from ADMIN_USERNAME and ADMIN_PASSWORD environment variables.
  * This script is idempotent - safe to run multiple times, will not create duplicates.
  *
  * Usage:
@@ -25,15 +25,15 @@ async function main() {
   const adapter = new PrismaLibSql(config);
   const prisma = new PrismaClient({ adapter });
 
-  const email = process.env.ADMIN_EMAIL || 'admin@artup.local';
+  const username = process.env.ADMIN_USERNAME || 'admin';
   const password = process.env.ADMIN_PASSWORD || 'admin';
 
   console.log('🌱 Seeding database...');
-  console.log(`📧 Admin email: ${email}`);
+  console.log(`👤 Admin username: ${username}`);
 
   // Check if admin user already exists
   const existingUser = await prisma.user.findUnique({
-    where: { email },
+    where: { username },
   });
 
   if (existingUser) {
@@ -48,7 +48,7 @@ async function main() {
   // Create admin user
   await prisma.user.create({
     data: {
-      email,
+      username,
       password: hashedPassword,
       name: 'Admin',
       emailVerified: new Date(), // Mark as verified for immediate login
@@ -58,7 +58,7 @@ async function main() {
   console.log('✓ Admin user created successfully');
   console.log('');
   console.log('You can now sign in with:');
-  console.log(`  Email: ${email}`);
+  console.log(`  Username: ${username}`);
   console.log(`  Password: ${password}`);
 
   await prisma.$disconnect();

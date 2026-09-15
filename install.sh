@@ -40,10 +40,10 @@ while [ -z "$DOMAIN" ]; do
     read -p "Domain name (e.g., blog.example.com): " DOMAIN
 done
 
-read -p "Admin email address: " ADMIN_EMAIL
-while [ -z "$ADMIN_EMAIL" ]; do
-    echo -e "${RED}Email is required.${NC}"
-    read -p "Admin email address: " ADMIN_EMAIL
+read -p "Admin username: " ADMIN_USERNAME
+while [ -z "$ADMIN_USERNAME" ]; do
+    echo -e "${RED}Username is required.${NC}"
+    read -p "Admin username: " ADMIN_USERNAME
 done
 
 read -sp "Admin password: " ADMIN_PASSWORD
@@ -86,7 +86,7 @@ NEXTAUTH_URL=https://$DOMAIN
 NEXTAUTH_SECRET=$NEXTAUTH_SECRET
 
 # Admin (credentials for first-time setup)
-ADMIN_EMAIL=$ADMIN_EMAIL
+ADMIN_USERNAME=$ADMIN_USERNAME
 ADMIN_PASSWORD=$ADMIN_PASSWORD
 EOF
 
@@ -117,10 +117,10 @@ async function createAdminUser() {
   const adapter = new PrismaLibSQL(libsql);
   const prisma = new PrismaClient({ adapter });
 
-  const email = process.env.ADMIN_EMAIL;
+  const username = process.env.ADMIN_USERNAME;
   const password = process.env.ADMIN_PASSWORD;
 
-  const existingUser = await prisma.user.findUnique({ where: { email } });
+  const existingUser = await prisma.user.findUnique({ where: { username } });
 
   if (existingUser) {
     console.log('Admin user already exists');
@@ -131,7 +131,7 @@ async function createAdminUser() {
 
   await prisma.user.create({
     data: {
-      email,
+      username,
       password: hashedPassword,
       name: 'Admin',
       emailVerified: new Date(),
@@ -161,7 +161,7 @@ echo -e "${GREEN}Installation Complete!${NC}"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 echo "Your blog is accessible at: https://$DOMAIN"
-echo "Admin email: $ADMIN_EMAIL"
+echo "Admin username: $ADMIN_USERNAME"
 echo ""
 echo "Next steps:"
 echo "1. Make sure your domain DNS points to this server's IP"

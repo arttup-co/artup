@@ -10,7 +10,7 @@ export default function SettingsPage() {
   const [title, setTitle] = useState("");
   const [bio, setBio] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -25,7 +25,7 @@ export default function SettingsPage() {
           setTitle(data.title || "");
           setBio(data.bio || "");
           setAvatarUrl(data.avatarUrl || "");
-          setEmail(data.email || "");
+          setUsername(data.username || "");
         }
       } catch (error) {
         console.error("Failed to fetch profile:", error);
@@ -99,16 +99,16 @@ export default function SettingsPage() {
         <div className="space-y-6">
           <div>
             <label className="block text-sm font-medium mb-2">
-              Email
+              Username
             </label>
             <input
-              type="email"
-              value={email}
+              type="text"
+              value={username}
               disabled
               className="w-full px-3 py-2 border border-border rounded-md bg-muted text-muted-foreground cursor-not-allowed"
             />
             <p className="text-sm text-muted-foreground mt-1">
-              Email cannot be changed
+              Username cannot be changed
             </p>
           </div>
 

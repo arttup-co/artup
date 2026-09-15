@@ -23,7 +23,7 @@ Most blogging tools force a trade-off: easy-but-locked-in (Medium, Substack) or 
 - 🚀 **One-command deploy** — Docker Compose, works on any VPS/cloud provider
 - ✍️ **Modern editor** — Novel/Tiptap-based rich text editor
 - 🔓 **No lock-in** — your posts, your SQLite database, your domain
-- 🔒 **Simple auth** — email/password, no external dependencies
+- 🔒 **Simple auth** — username/password, no external dependencies
 - 📦 **Zero config** — SQLite database, no separate DB container needed
 - 🔐 **Auto HTTPS** — Caddy handles SSL certificates automatically
 
@@ -50,7 +50,7 @@ chmod +x install.sh
 
 The installer will prompt you for:
 - Your domain name (e.g., `blog.example.com`)
-- Admin email address
+- Admin username
 - Admin password
 
 That's it! Your blog will be live with automatic HTTPS in a few minutes.
@@ -78,7 +78,7 @@ npm install
 # 2. Set up environment
 cp .env.example .env
 # Edit .env and uncomment the dev defaults (lines 26-28):
-#   ADMIN_EMAIL=admin@artup.local
+#   ADMIN_USERNAME=admin
 #   ADMIN_PASSWORD=admin
 #   NEXTAUTH_URL=http://localhost:3000
 # Also generate NEXTAUTH_SECRET: openssl rand -base64 32
@@ -95,7 +95,7 @@ npm run dev
 ```
 
 Default dev credentials:
-- Email: `admin@artup.local`
+- Username: `admin`
 - Password: `admin`
 
 ### Production Build (Local)
@@ -118,7 +118,7 @@ openssl rand -base64 32
 #   DATABASE_URL=file:./prisma/prod.db
 #   NEXTAUTH_URL=http://localhost:3000 (or your domain)
 #   NEXTAUTH_SECRET=<paste the generated secret here>
-#   ADMIN_EMAIL and ADMIN_PASSWORD for your admin account
+#   ADMIN_USERNAME and ADMIN_PASSWORD for your admin account
 
 # 3. Set up database (production mode)
 npx prisma generate

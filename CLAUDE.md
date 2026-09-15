@@ -22,7 +22,7 @@ Vercel + Neon Postgres, documented later.
 ## Tech stack (decided)
 - Next.js 15, App Router, TypeScript
 - SQLite via Prisma ORM with LibSQL adapter
-- Auth.js (NextAuth v5) — email/password authentication for v1
+- Auth.js (NextAuth v5) — username/password authentication for v1
 - Editor: Novel (Tiptap-based) — AI autocomplete plugin OFF for v1
 - Styling: Tailwind + shadcn/ui
 - Reverse proxy / TLS: Caddy (auto Let's Encrypt from a domain env var)
@@ -34,7 +34,7 @@ The only bar: a stranger can deploy Artup and publish a real article within
 minutes. Nothing beyond this list belongs in v1.0.
 
 Included:
-- Auth: email/password authentication (no OAuth, no email verification)
+- Auth: username/password authentication (no OAuth, no email verification)
 - Create / edit / publish a post via Novel editor (AI plugin disabled)
 - Draft vs. published state
 - Public blog views: post list, single post page, author page
@@ -65,7 +65,7 @@ Only two tables: `users`, `posts`. No `analytics_events`, no `media`, no
 - `docker-compose.yml` — app + SQLite + caddy services
 - `Caddyfile` — minimal reverse proxy + auto-HTTPS config
 - `install.sh` — one-command installer: checks Docker, prompts for domain +
-  admin email/password, generates `.env`, runs `docker compose up -d`, creates admin user
+  admin username/password, generates `.env`, runs `docker compose up -d`, creates admin user
 - `.env.example` — documents every variable for manual setup too
 - `start.js` — Docker entry point that runs migrations then starts Next.js
 
@@ -81,7 +81,7 @@ Only two tables: `users`, `posts`. No `analytics_events`, no `media`, no
 ## Current phase
 V1.0 deployment infrastructure complete. Core features implemented:
 - Prisma schema with User and Post models
-- Email/password authentication via Auth.js
+- Username/password authentication via Auth.js
 - Docker deployment with SQLite database
 - One-command installer with admin account creation
 Next: complete remaining v1.0 features (post editor, public pages).
@@ -95,6 +95,10 @@ Next: complete remaining v1.0 features (post editor, public pages).
 - **Switched from magic link to email/password auth** (2026-09-04): Eliminates
   SMTP dependency for single-tenant use case, matches WordPress-like setup UX,
   simpler installation (no email service required), better for self-hosted model.
+- **Switched from email to username authentication** (2026-09-15): Changed primary
+  authentication identifier from email to username. Email field now optional in User
+  model for future contact/profile purposes. Simpler, more flexible for single-tenant
+  blogs where email may not be necessary.
 
 ## Commit conventions
 Every commit authored with Claude's help must credit both authors. Use git's

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import ImageUploadCrop from "@/components/image-upload-crop";
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -174,32 +175,12 @@ export default function SettingsPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">
-              Profile Picture URL
-            </label>
-            <input
-              type="url"
-              value={avatarUrl}
-              onChange={(e) => setAvatarUrl(e.target.value)}
-              className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-              placeholder="https://example.com/your-photo.jpg"
+            <ImageUploadCrop
+              onUploadComplete={(url) => setAvatarUrl(url)}
+              uploadEndpoint="/api/upload/avatar"
+              currentImageUrl={avatarUrl}
+              label="Profile Picture"
             />
-            <p className="text-sm text-muted-foreground mt-1">
-              Image upload will be available in v1.1. For now, use a direct URL.
-            </p>
-            {avatarUrl && (
-              <div className="mt-3">
-                <p className="text-sm font-medium mb-2">Preview:</p>
-                <img
-                  src={avatarUrl}
-                  alt="Profile preview"
-                  className="w-24 h-24 rounded-full object-cover border-2 border-border"
-                  onError={(e) => {
-                    e.currentTarget.style.display = "none";
-                  }}
-                />
-              </div>
-            )}
           </div>
 
           <div className="border-t border-border pt-6">

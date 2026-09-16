@@ -159,3 +159,6 @@ SUMMARY.md
 notes/
 .cursor/
 .claude/
+
+# User uploaded files
+public/uploads/

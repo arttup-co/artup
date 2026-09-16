@@ -23,7 +23,12 @@ export async function generateMetadata(): Promise<Metadata> {
   const description = siteOwner?.title
     ? `${siteOwner.title}${siteOwner.bio ? ` - ${siteOwner.bio}` : ""}`
     : siteOwner?.bio || "AI-native blogging platform for freelancers and founders";
-  const imageUrl = siteOwner?.avatarUrl || `${siteUrl}/og-image.png`;
+
+  // Ensure image URL is absolute for OG tags
+  let imageUrl = siteOwner?.avatarUrl || "/og-image.png";
+  if (imageUrl && !imageUrl.startsWith('http')) {
+    imageUrl = `${siteUrl}${imageUrl.startsWith('/') ? '' : '/'}${imageUrl}`;
+  }
 
   return {
     title: siteName,

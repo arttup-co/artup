@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Editor } from "@/components/editor";
+import ImageUploadCrop from "@/components/image-upload-crop";
 
 export default function EditPostPage({
   params,
@@ -181,15 +182,12 @@ export default function EditPostPage({
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">
-              Cover Image URL
-            </label>
-            <input
-              type="url"
-              value={coverImageUrl}
-              onChange={(e) => setCoverImageUrl(e.target.value)}
-              className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-              placeholder="https://example.com/image.jpg"
+            <ImageUploadCrop
+              onUploadComplete={(url) => setCoverImageUrl(url)}
+              uploadEndpoint="/api/upload/cover"
+              currentImageUrl={coverImageUrl}
+              label="Cover Image"
+              aspectRatio={16 / 9}
             />
           </div>
 

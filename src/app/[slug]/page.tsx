@@ -28,7 +28,12 @@ export async function generateMetadata({
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
   const postUrl = `${siteUrl}/${post.slug}`;
   const description = post.excerpt || post.metaDescription || post.title;
-  const imageUrl = post.coverImageUrl || post.author.avatarUrl || `${siteUrl}/og-image.png`;
+
+  // Ensure image URL is absolute for OG tags
+  let imageUrl = post.coverImageUrl || post.author.avatarUrl || "/og-image.png";
+  if (imageUrl && !imageUrl.startsWith('http')) {
+    imageUrl = `${siteUrl}${imageUrl.startsWith('/') ? '' : '/'}${imageUrl}`;
+  }
 
   return {
     title: post.title,

@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
     const filename = `avatar-${timestamp}-${randomString}.${extension}`;
 
     // Ensure upload directory exists
-    const uploadDir = join(process.cwd(), 'public', 'uploads', 'avatars');
+    const uploadDir = join(process.cwd(), 'uploads', 'avatars');
     if (!existsSync(uploadDir)) {
       await mkdir(uploadDir, { recursive: true });
     }
@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
       .toFile(join(uploadDir, filename));
 
     // Return public URL
-    const publicUrl = `/uploads/avatars/${filename}`;
+    const publicUrl = `/api/uploads/avatars/${filename}`;
 
     return NextResponse.json({
       success: true,

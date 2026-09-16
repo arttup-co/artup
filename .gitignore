@@ -161,4 +161,7 @@ notes/
 .claude/
 
 # User uploaded files
-public/uploads/
+/uploads/**/*
+!/uploads/.gitkeep
+!/uploads/avatars/.gitkeep
+!/uploads/covers/.gitkeep

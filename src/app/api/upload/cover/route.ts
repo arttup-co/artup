@@ -25,10 +25,6 @@ export async function POST(request: NextRequest) {
     // Parse form data
     const formData = await request.formData();
     const file = formData.get('file') as File;
-    const cropX = parseFloat(formData.get('cropX') as string);
-    const cropY = parseFloat(formData.get('cropY') as string);
-    const cropWidth = parseFloat(formData.get('cropWidth') as string);
-    const cropHeight = parseFloat(formData.get('cropHeight') as string);
 
     // Validate file
     if (!file) {
@@ -52,19 +48,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate crop parameters
-    if (
-      isNaN(cropX) ||
-      isNaN(cropY) ||
-      isNaN(cropWidth) ||
-      isNaN(cropHeight)
-    ) {
-      return NextResponse.json(
-        { error: 'Invalid crop parameters' },
-        { status: 400 }
-      );
-    }
-
     // Convert file to buffer
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
@@ -81,14 +64,8 @@ export async function POST(request: NextRequest) {
       await mkdir(uploadDir, { recursive: true });
     }
 
-    // Process image with Sharp
+    // Process image with Sharp - resize to target dimensions
     await sharp(buffer)
-      .extract({
-        left: Math.round(cropX),
-        top: Math.round(cropY),
-        width: Math.round(cropWidth),
-        height: Math.round(cropHeight),
-      })
       .resize(OUTPUT_WIDTH, OUTPUT_HEIGHT, {
         fit: 'cover',
         position: 'center',

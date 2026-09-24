@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Editor } from "@/components/editor";
-import ImageUploadCrop from "@/components/image-upload-crop";
+import ImageUpload from "@/components/image-upload";
 
 export default function EditPostPage({
   params,
@@ -182,7 +182,7 @@ export default function EditPostPage({
           </div>
 
           <div>
-            <ImageUploadCrop
+            <ImageUpload
               onUploadComplete={(url) => setCoverImageUrl(url)}
               uploadEndpoint="/api/upload/cover"
               currentImageUrl={coverImageUrl}

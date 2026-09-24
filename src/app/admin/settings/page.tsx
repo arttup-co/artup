@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import ImageUploadCrop from "@/components/image-upload-crop";
+import ImageUpload from "@/components/image-upload";
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -175,11 +175,12 @@ export default function SettingsPage() {
           </div>
 
           <div>
-            <ImageUploadCrop
+            <ImageUpload
               onUploadComplete={(url) => setAvatarUrl(url)}
               uploadEndpoint="/api/upload/avatar"
               currentImageUrl={avatarUrl}
               label="Profile Picture"
+              aspectRatio={4 / 5}
             />
           </div>
 
